@@ -40,7 +40,35 @@ $(document).ready(init);
 
 function init() {
 	replaceColorsInDom();
-	$("body").append('<div id="yoooooo"></div>');
+	$("body").append('<div id="recolorIt"></div>');
+	$("#recolorIt").append('<div class="recolorit-modal recolorit-container"></div>');
+	$(".recolorit-modal").append(getInputRowHtml(undefined, true));
+	$("#recolorIt .recolorit-modal").easyModal();
+	$("#recolorIt .recolorit-modal").trigger('openModal');
+	getConfigFromLocalStorage();
 }
 
+function getInputRowHtml(values , isTop) {
+	if (!values || $.isEmptyObject(values)) {
+		values = {regex:"", csspath:"", from:"", to:""}
+	}
+	var html = '<div class="row insert-rule">\
+										<div class="three columns">\
+											<input class="u-full-width regex" value="'+ values.regex + '" type="text" placeholder="RegExp for page in URL"/>\
+										</div>\
+										<div class="three columns">\
+											<input class="u-full-width csspath" value="'+ values.csspath + '" type="text" placeholder="CSS Path of parent element"/>\
+										</div>\
+										<div class="two columns">\
+											<input class="u-full-width from" value="'+ values.from + '" type="text" placeholder="Initial color in rgb"/>\
+										</div>\
+										<div class="two columns">\
+											<input class="u-full-width to" value="'+ values.to + '" type="text" placeholder="New color in rgb"/>\
+										</div>' + ((isTop) ? '<div class="two columns"><button class="button-primary save-new-rule">Save</button></div>' : '<div class="one column"><button class="button-primary update-rule">Update</button></div><div class="one column"><button class="button-primary delete-rule">DELETE</button></div>') + 
+						  '</div>'
+	return html;
+}
 
+function getConfigFromLocalStorage() {
+	rulesObj = JSON.parse(localStorage.getItem("rulesObj"));
+}

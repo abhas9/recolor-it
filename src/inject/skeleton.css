@@ -74,7 +74,7 @@
   /* Larger than Desktop HD */
 }
 
-#recolorIt .container {
+#recolorIt .recolorit-container {
   position: relative;
   width: 100%;
   max-width: 960px;
@@ -91,7 +91,7 @@
 }
 
 @media (min-width: 400px) {
-  #recolorIt .container {
+  #recolorIt .recolorit-container {
     width: 85%;
     padding: 0;
   }
@@ -101,7 +101,7 @@
   #recolorIt {
     /* Offsets */
   }
-  #recolorIt .container {
+  #recolorIt .recolorit-container {
     width: 80%;
   }
   #recolorIt .column,
@@ -550,7 +550,7 @@
   border-top: 1px solid #E1E1E1;
 }
 
-#recolorIt .container:after,
+#recolorIt .recolorit-container:after,
 #recolorIt .row:after,
 #recolorIt .u-cf {
   content: "";
