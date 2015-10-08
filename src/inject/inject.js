@@ -42,6 +42,7 @@ function init() {
 	$("#recolorIt .recolorit-modal").trigger('openModal');
 	$("#recolorIt").on('click' , ".delete-rule", deleteRecolorRule);
 	$("#recolorIt").on('click' , ".update-rule", updateRecolorRule);
+	$("#recolorIt .save-new-rule").click(saveNewRule);
 
 	getConfigFromLocalStorage();
 }
@@ -67,6 +68,24 @@ function getInputRowHtml(values , isTop) {
 	return html;
 }
 
+function saveNewRule(obj) {
+	var row = $(this).parent().parent();
+	var regex = row.find(".regex").val();
+	var csspath = row.find(".csspath").val();
+	var from = row.find(".from").val();
+	var to = row.find(".to").val();
+	var ruleid = guid();
+	if (regex && ruleid && csspath && from && to) {
+		if (!rulesObj.hasOwnProperty(regex)) rulesObj[regex] = {};
+		if (!rulesObj[regex].hasOwnProperty(ruleid)) rulesObj[ruleid] = {};
+		rulesObj[regex][ruleid] = [csspath, from, to];
+		var html = getInputRowHtml({ruleid: ruleid, regex: regex, csspath: csspath, from: from, to: to}, false);
+		$("#recolorIt .saved-rules").prepend(html);	
+		updateLocalStorage();
+		row.find(".from,.to,.csspath,.regex").val("");
+	}
+}
+
 function updateRecolorRule(e) {
 	var row = $(this).parent().parent();
 	var regex = row.attr("data-regex");
@@ -77,6 +96,9 @@ function updateRecolorRule(e) {
 	var csspath = row.find(".csspath").val();
 	var from = row.find(".from").val();
 	var to = row.find(".to").val();
+
+	if (!rulesObj.hasOwnProperty(regex)) rulesObj[regex] = {};
+	if (!rulesObj[regex].hasOwnProperty(ruleid)) rulesObj[ruleid] = {};
 
 	rulesObj[regex][ruleid] = [csspath, from, to];
 	updateLocalStorage();
