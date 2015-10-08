@@ -27,7 +27,7 @@
         "http://*/*","https://*/*"
       ],
       "css": [
-        "src/inject/inject.css"
+        "src/inject/skeleton.css", "src/inject/inject.css"
       ]
     },
     {
