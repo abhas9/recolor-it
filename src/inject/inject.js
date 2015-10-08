@@ -121,19 +121,6 @@ function updateLocalStorage() {
 function getConfigFromLocalStorage() {
 	var i, html;
 	rulesObj = JSON.parse(localStorage.getItem("rulesObj"));
-	// rulesObj = {
-	// 	":5601": {
-	// 		"a": ["body > div.content > div > div > dashboard-grid > ul > li:nth-child(10) > dashboard-panel", "rgb(87, 193, 123)", "rgb(191, 175, 64)"],
-	// 		"b": ["body > div.content > div > div > dashboard-grid > ul > li:nth-child(7) > dashboard-panel", "rgb(87, 193, 123)", "rgb(191, 175, 64)"]
-	// 	},
-	// 	"7383": {
-	// 		"c": [".nav.nav-tabs","rgb(66, 139, 202)","red"]
-	// 	}
-	// 	,
-	// 	"wiki": {
-	// 		"d": ["#mp-topbanner","rgb(6, 69, 173)","red"]
-	// 	}	
-	// };
 	if (!$.isEmptyObject(rulesObj)) {
 		var ruleUris = Object.keys(rulesObj);
 		for (var ruleUri in rulesObj) {
@@ -166,4 +153,3 @@ chrome.runtime.onMessage.addListener(
 	  }
 	}
 );
-
