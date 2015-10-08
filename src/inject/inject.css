@@ -3,3 +3,14 @@
 	border: 1px solid #ccc;
 	padding: 20px 50px 20px 30px;
 }
+#recolorIt .update-rule, #recolorIt .delete-rule {
+	padding: 0px 5px;
+}
+#recolorIt button.delete-rule {
+	background-color: rgb(231, 76, 60);
+	border-color: rgb(199, 63, 49);
+}
+#recolorIt button.delete-rule:hover {
+	background-color: rgb(199, 63, 49);
+	border-color: rgb(199, 63, 49);
+}
