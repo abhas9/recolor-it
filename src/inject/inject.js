@@ -12,39 +12,39 @@ function replaceColorInSelector(selector, from, to) {
 $(document).bind('DOMNodeInserted', replaceColorsInDom);
 
 function replaceColorsInDom(e) {
+	console.log("sssssss");
 	var i;
 	if ($.isEmptyObject(rulesObj))
 		return;
-	var ruleUris = Object.keys(rulesObj);
-	for (i = 0; i < ruleUris.length; i++) {
-		var match = window.location.href.match(RegExp(ruleUris[i]));
+	var matchedRuleUri = ""
+	for (var ruleUri in rulesObj) {
+		var match = window.location.href.match(RegExp(ruleUri));
 		if (match && match.length > 0) {
+			matchedRuleUri = ruleUri;
 			break;
 		}
 	}
-	if (i === ruleUris.length) 
+	if (!matchedRuleUri) 
 		return;
 
- for (var ruleid in rulesObj[ruleUris[i]]) {
-		replaceColorInSelector(rulesObj[ruleUris[i]][ruleid][0], rulesObj[ruleUris[i]][ruleid][1], rulesObj[ruleUris[i]][ruleid][2]);
+ for (var ruleid in rulesObj[matchedRuleUri]) {
+		replaceColorInSelector(rulesObj[matchedRuleUri][ruleid][0], rulesObj[matchedRuleUri][ruleid][1], rulesObj[matchedRuleUri][ruleid][2]);
 	}
 }
 
 $(document).ready(init);
 
 function init() {
-	replaceColorsInDom();
 	$("body").append('<div id="recolorIt"></div>');
 	$("#recolorIt").append('<div class="recolorit-modal recolorit-container"></div>');
 	$("#recolorIt .recolorit-modal").append(getInputRowHtml(undefined, true));
 	$("#recolorIt .recolorit-modal").append('<div class="saved-rules"></div>');
-	$("#recolorIt .recolorit-modal").easyModal({top: 100});
-	$("#recolorIt .recolorit-modal").trigger('openModal');
+	$("#recolorIt .recolorit-modal").easyModal({top: 100, onClose: replaceColorsInDom}); //TO-DO: Fix onclose to reflect change
 	$("#recolorIt").on('click' , ".delete-rule", deleteRecolorRule);
 	$("#recolorIt").on('click' , ".update-rule", updateRecolorRule);
 	$("#recolorIt .save-new-rule").click(saveNewRule);
-
 	getConfigFromLocalStorage();
+	replaceColorsInDom();
 }
 
 function getInputRowHtml(values , isTop) {
@@ -154,3 +154,16 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
+
+chrome.runtime.onMessage.addListener(
+	function(request, sender, sendResponse) {
+	  if( request.message === "recolorIt" ) {
+	   if ($("#recolorIt .recolorit-modal:visible").length === 0) {
+	   	$("#recolorIt .recolorit-modal").trigger('openModal');
+	   } else {
+	   	$("#recolorIt .recolorit-modal").trigger('closeModal');
+	   }
+	  }
+	}
+);
+
